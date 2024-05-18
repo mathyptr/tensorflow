@@ -1,3 +1,4 @@
+ln -s /usr/bin/python3 /usr/bin/python
 cd /content
 #git clone https://github.com/mathyptr/tensorflow.git 
 git clone https://github.com/tensorflow/models.git 
@@ -8,8 +9,9 @@ wget http://download.tensorflow.org/models/object_detection/classification/tf2/2
 tar -xvf mobilenet_v2.tar.gz 
 wget https://raw.githubusercontent.com/tensorflow/models/master/research/object_detection/configs/tf2/ssd_mobilenet_v2_320x320_coco17_tpu-8.config 
 mv ssd_mobilenet_v2_320x320_coco17_tpu-8.config mobilenet_v2.config 
-protoc /content/models/research/object_detection/protos/*.proto --python_out=/content/models/research/ 
-cp object_detection/packages/tf2/setup.py . 
+cd /content/models/research/
+protoc object_detection/protos/*.proto --python_out=.
+cp models/research/object_detection/packages/tf2/setup.py /content/models/research/
 python -m pip install .
 
 #WORKDIR /content
