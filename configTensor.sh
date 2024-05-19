@@ -12,6 +12,8 @@ mv ssd_mobilenet_v2_320x320_coco17_tpu-8.config mobilenet_v2.config
 cd /content/models/research/
 protoc object_detection/protos/*.proto --python_out=.
 cp object_detection/packages/tf2/setup.py .
+mv /usr/lib/python3.12/EXTERNALLY-MANAGED /usr/lib/python3.12/EXTERNALLY-MANAGED.old
+#il successivo comando da errore indicando la necessità di una versione di python <3.12,>=3.8
 python -m pip install .
 
 #WORKDIR /content
