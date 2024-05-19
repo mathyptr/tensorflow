@@ -1,0 +1,2 @@
+python3 image_filter_augmentation.py -a Y -n 10 -p 1 -i image -s 2 -o ./
+python3 image_filter_augmentation.py -a N -i venerebotticelli.jpeg -s 2 -o ./imfilter/

@@ -1,0 +1,218 @@
+
+!git clone https://github.com/tensorflow/models.git
+%cd /content/models/research/
+!protoc object_detection/protos/*.proto --python_out=.
+
+# Install TensorFlow Object Detection API.
+!cp object_detection/packages/tf2/setup.py .
+!python -m pip install .
+
+#test che fallisce
+!python /content/models/research/object_detection/builders/model_builder_tf2_test.py
+
+!pip install tensorflow --upgrade #da verificare se necessario. ## NON NECESSARIO
+!pip install --upgrade tf-models-official  #da verificare se necessario ## NON NECESSARIO
+
+!pip install tensorflow==2.13.1 #dopo questo chiede di il restart della session
+
+#test che non fallisce con la 2.13.1
+!python /content/models/research/object_detection/builders/model_builder_tf2_test.py
+
+
+%cd /content/
+!mkdir dataset
+%cd dataset
+
+!git clone https://github.com/mathyptr/tensorflow.git
+!mv tensorflow/kangaroodataset/* .
+
+
+#se non posso scaricare da git e sto usando colab
+#from google.colab import files
+#uploaded = files.upload()
+#!unzip kangaroodataset.zip #basta questo se sono solo in locale
+#right-click in the File section on Google Colab and create a New file named labelmap.pbtxt as follows:
+#item {
+#    name: "kangaroo"
+#    id: 1
+#}
+
+
+!mv tensorflow/labelmap.pbtxt /content
+%cd /content/
+
+
+!python dataset/generate_tf_records.py -l /content/labelmap.pbtxt -o dataset/train.record -i dataset/images -csv dataset/train_labels.csv
+!python dataset/generate_tf_records.py -l /content/labelmap.pbtxt -o dataset/test.record -i dataset/images -csv dataset/test_labels.csv
+
+%cd /content
+
+!wget http://download.tensorflow.org/models/object_detection/classification/tf2/20200710/mobilenet_v2.tar.gz
+!tar -xvf mobilenet_v2.tar.gz
+!rm mobilenet_v2.tar.gz
+
+
+!wget https://raw.githubusercontent.com/tensorflow/models/master/research/object_detection/configs/tf2/ssd_mobilenet_v2_320x320_coco17_tpu-8.config
+!mv ssd_mobilenet_v2_320x320_coco17_tpu-8.config mobilenet_v2.config
+
+
+
+
+#Defining training parameters
+num_classes = 1
+batch_size = 96
+num_steps = 7500
+num_eval_steps = 1000
+
+train_record_path = '/content/dataset/train.record'
+test_record_path = '/content/dataset/test.record'
+model_dir = '/content/training/'
+labelmap_path = '/content/labelmap.pbtxt'
+
+pipeline_config_path = 'mobilenet_v2.config'
+fine_tune_checkpoint = '/content/mobilenet_v2/mobilenet_v2.ckpt-1'
+
+
+
+
+
+import re
+
+with open(pipeline_config_path) as f:
+    config = f.read()
+
+with open(pipeline_config_path, 'w') as f:
+
+  # Set labelmap path
+  config = re.sub('label_map_path: ".*?"', 
+             'label_map_path: "{}"'.format(labelmap_path), config)
+  
+  # Set fine_tune_checkpoint path
+  config = re.sub('fine_tune_checkpoint: ".*?"',
+                  'fine_tune_checkpoint: "{}"'.format(fine_tune_checkpoint), config)
+  
+  # Set train tf-record file path
+  config = re.sub('(input_path: ".*?)(PATH_TO_BE_CONFIGURED/train)(.*?")', 
+                  'input_path: "{}"'.format(train_record_path), config)
+  
+  # Set test tf-record file path
+  config = re.sub('(input_path: ".*?)(PATH_TO_BE_CONFIGURED/val)(.*?")', 
+                  'input_path: "{}"'.format(test_record_path), config)
+  
+  # Set number of classes.
+  config = re.sub('num_classes: [0-9]+',
+                  'num_classes: {}'.format(num_classes), config)
+  
+  # Set batch size
+  config = re.sub('batch_size: [0-9]+',
+                  'batch_size: {}'.format(batch_size), config)
+  
+  # Set training steps
+  config = re.sub('num_steps: [0-9]+',
+                  'num_steps: {}'.format(num_steps), config)
+  
+  f.write(config)
+
+
+
+
+#With the parameters set, start the training: 
+!python /content/models/research/object_detection/model_main_tf2.py \
+    --pipeline_config_path={pipeline_config_path} \
+    --model_dir={model_dir} \
+    --alsologtostderr \
+    --num_train_steps={num_steps} \
+    --sample_1_of_n_eval_examples=1 \
+    --num_eval_steps={num_eval_steps}
+
+
+#Se compare ad un certo punto ^C vuole dire che è crashato, probabilmente ha usato tutta la RAM
+# provare con le seguenti righe che portano al crash e poi colab dovrebbe dire che “Your session crashed.”
+# e chiede se si vuole aumentare la RAM
+
+
+
+
+#Validate the model
+!python /content/models/research/object_detection/model_main_tf2.py \
+    --pipeline_config_path={pipeline_config_path} \
+    --model_dir={model_dir} \
+    --checkpoint_dir={model_dir} 
+
+#Here we're going to run the code through a loop that waits for checkpoints to evaluate. Once the evaluation finishes, you're going to see the message:
+#INFO:tensorflow:Waiting for new checkpoint at /content/training/
+#Then you can stop the cell
+
+
+#grafics
+%load_ext tensorboard
+%tensorboard --logdir '/content/training/'
+
+
+
+
+#export from colab
+
+with open('/usr/local/lib/python3.10/dist-packages/tensorflow/python/keras/utils/tf_utils.py') as f:
+    tf_utils = f.read()
+
+with open('/usr/local/lib/python3.10/dist-packages/tensorflow/python/keras/utils/tf_utils.py', 'w') as f:
+  # Set labelmap path
+  throw_statement = "raise TypeError('Expected Operation, Variable, or Tensor, got ' + str(x))"
+  tf_utils = tf_utils.replace(throw_statement, "if not isinstance(x, str):" + throw_statement)
+  f.write(tf_utils)
+
+output_directory = 'inference_graph'
+
+
+
+!python /content/models/research/object_detection/exporter_main_v2.py \
+    --trained_checkpoint_dir {model_dir} \
+    --output_directory {output_directory} \
+    --pipeline_config_path {pipeline_config_path}
+
+
+
+!zip -r /content/saved_model.zip /content/inference_graph/saved_model/
+
+
+from google.colab import files
+files.download("/content/saved_model.zip")
+
+
+
+
+#Testing the trained model
+
+!wget https://raw.githubusercontent.com/hugozanini/object-detection/master/inferenceutils.py
+
+from inferenceutils import *
+output_directory = 'inference_graph/'
+category_index = label_map_util.create_category_index_from_labelmap(labelmap_path, use_display_name=True)
+tf.keras.backend.clear_session()
+model = tf.saved_model.load(f'/content/{output_directory}/saved_model')
+import pandas as pd
+test = pd.read_csv('/content/dataset/test_labels.csv')
+#Getting 3 random images to test
+images = list(test.sample(n=3)['filename'])
+
+for image_name in images:
+  image_np = load_image_into_numpy_array('/content/dataset/images/' + image_name)
+  output_dict = run_inference_for_single_image(model, image_np)
+  vis_util.visualize_boxes_and_labels_on_image_array(
+      image_np,
+      output_dict['detection_boxes'],
+      output_dict['detection_classes'],
+      output_dict['detection_scores'],
+      category_index,
+      instance_masks=output_dict.get('detection_masks_reframed', None),
+      use_normalized_coordinates=True,
+      line_thickness=8)
+  display(Image.fromarray(image_np))
+
+
+
+
+
+
+

@@ -1,0 +1,52 @@
+************************************************************
+su docker tensorflow
+mkdir mathy
+apt-get update
+cd home/
+ls
+mkdir mathy
+cd mathy/
+apt install python3-virtualenv
+wget https://www.python.org/ftp/python/3.6.8/Python-3.6.8.tgz
+tar xvf Python-3.6.8.tgz 
+cd Python-3.6.8
+./configure
+apt-get install -y build-essential libssl-dev zlib1g-dev libbz2-dev                         libreadline-dev libsqlite3-dev wget curl llvm                         libncurses5-dev libncursesw5-dev xz-utils tk-dev                         libffi-dev liblzma-dev python3-openssl git
+make altinstall
+cd ../
+wget https://pypi.python.org/packages/5c/79/5dae7494b9f5ed061cff9a8ab8d6e1f02db352f3facf907d9eb614fb80e9/virtualenv-15.0.2.tar.gz#md5=0ed59863994daf1292827ffdbba80a63
+tar -zxvf virtualenv-15.0.2.tar.gz
+cd virtualenv-15.0.2
+/usr/local/bin/python3.6 setup.py install
+virtualenv ve -p /usr/local/bin/python3.6
+cd ..
+mkdir myenv
+cd myenv/
+virtualenv ve -p /usr/local/bin/python3.6
+source ve/bin/activate 
+cd ..
+cd virtualenv-15.0.2
+virtualenv ve -p /usr/local/bin/python3.6
+source ve/bin/activate
+deactivate
+cd ..
+source ve/bin/activate
+virtualenv ve -p /usr/local/bin/python3.6
+cd myenv/
+virtualenv ve -p /usr/local/bin/python3.6
+source ve/bin/activate
+rmdir ve
+rm -r  ve
+virtualenv ve -p /usr/local/bin/python3.6
+cd ..
+source ve/bin/activate
+python --version
+deactivate
+pip3.6 install tensorflowjs[wizard]
+pip install tensorflowjs[wizard]
+cd /mobilenet/
+mkdir mykangaroo
+cd mykangaroo/
+mkdir myweb_model
+tensorflowjs_converter     --input_format=tf_saved_model     --output_format=tfjs_graph_model     --signature_name=serving_default     --saved_model_tags=serve     /mobilenet/mykangaroo/content     /mobilenet/mykangaroo/myweb_model
+

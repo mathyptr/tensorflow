@@ -1,0 +1,48 @@
+*************************************
+TENSORFLOW CONTAINER
+*************************************
+docker pull tensorflow/tensorflow:latest 
+docker run -it -p 9876:8080 tensorflow/tensorflow bash
+
+apt-get update
+apt install nodejs
+apt-get install npm
+
+cd /home
+mkdir mathy
+cd mathy
+
+git clone https://github.com/hugozanini/TFJS-object-detection
+
+#vi tensorflow/src/index.js
+#modifica funzione
+async function load_model() {
+    //se il modello è in locale con webserver che ha come document root la directory contenente i file del modello (json e bin)
+    //const model = await loadGraphModel("http://127.0.0.1:8080/model.json");
+    
+    //se uso docker e il modello è su un altro container su windows lo vede come localhost:8765
+    const model = await loadGraphModel("http://localhost:8765/model.json");
+
+    //se il webserver è su un'altra macchina
+    //const model = await loadGraphModel("http://172.17.0.3:8080/model.json");
+
+    //questo è il caso in cui prendiamo il modello dal git di Zanini
+    //const model = await loadGraphModel("https://raw.githubusercontent.com/hugozanini/TFJS-object-detection/master/models/kangaroo-detector/model.json");
+    return model;
+  }
+
+
+
+apt-get update && apt-get install -y vim
+
+#installo utils-ping solo per test
+#apt-get install -y iputils-ping 
+
+
+npm install
+npm test
+
+npm start build
+
+npm run build
+
