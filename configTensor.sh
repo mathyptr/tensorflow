@@ -11,7 +11,7 @@ wget https://raw.githubusercontent.com/tensorflow/models/master/research/object_
 mv ssd_mobilenet_v2_320x320_coco17_tpu-8.config mobilenet_v2.config 
 cd /content/models/research/
 protoc object_detection/protos/*.proto --python_out=.
-cp models/research/object_detection/packages/tf2/setup.py /content/models/research/
+cp object_detection/packages/tf2/setup.py .
 python -m pip install .
 
 #WORKDIR /content
