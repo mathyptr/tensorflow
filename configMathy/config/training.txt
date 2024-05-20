@@ -19,11 +19,11 @@
 !python /content/models/research/object_detection/builders/model_builder_tf2_test.py
 
 
-%cd /content/
+%cd /content/ #se non sei su colab crea una cartella content perchè gli script e comandi successivi lavorano a partire da tale cartella
 !mkdir dataset
 %cd dataset
 
-!git clone https://github.com/mathyptr/tensorflow.git
+!git clone https://github.com/mathyptr/tensorflow.git 
 !mv tensorflow/kangaroodataset/* .
 
 
@@ -173,15 +173,6 @@ output_directory = 'inference_graph'
 
 
 
-!zip -r /content/saved_model.zip /content/inference_graph/saved_model/
-
-
-from google.colab import files
-files.download("/content/saved_model.zip")
-
-
-
-
 #Testing the trained model
 
 !wget https://raw.githubusercontent.com/hugozanini/object-detection/master/inferenceutils.py
@@ -213,6 +204,60 @@ for image_name in images:
 
 
 
+#comandi da usare se stai usando Colab
+!zip -r /content/saved_model.zip /content/inference_graph/saved_model/
+from google.colab import files
+files.download("/content/saved_model.zip")
 
 
+
+########################CONVERSIONE
+
+#se hai effettuato il training in locale per la conversione usa questo comando
+tensorflowjs_converter     --input_format=tf_saved_model     --output_format=tfjs_graph_model     --signature_name=serving_default     --saved_model_tags=serve     /content/inference_graph/saved_model/     /content/mykangaroo/myweb_model
+
+########################CONVERSIONE
+
+
+
+########################UTILIZZO
+
+#Per usare il modello creato dobbiamo creare un server HTTP che renderà il modello disponibile in un URL tramite richieste GET (il modello deve stare nella document root del server web).
+Durante il caricamento del modello, TensorFlow.js eseguirà le seguenti richieste:
+GET /model.json
+GET /group1-shard1of5.bin
+GET /group1-shard2of5.bin
+GET /group1-shard3of5.bin
+GET /group1-shardo4f5.bin
+GET /group1-shardo5f5.bin
+
+#scarico la web app di Zanini
+git clone https://github.com/hugozanini/TFJS-object-detection
+
+Nella web app va modificata nell'index.js la funzione load_model(), in modo da interrogare il web server che gestisce il nostro modello
+
+#vi tensorflow/src/index.js
+#modifica funzione
+async function load_model() {
+    //se il modello è in locale con webserver che ha come document root la directory contenente i file del modello (json e bin)
+    //const model = await loadGraphModel("http://127.0.0.1:8080/model.json");
+    
+    //se uso docker e il modello è su un altro container su windows lo vede come localhost:8765
+    const model = await loadGraphModel("http://localhost:8765/model.json");
+
+    //se il webserver è su un'altra macchina
+    //const model = await loadGraphModel("http://172.17.0.3:8080/model.json");
+
+    //questo è il caso in cui prendiamo il modello dal git di Zanini
+    //const model = await loadGraphModel("https://raw.githubusercontent.com/hugozanini/TFJS-object-detection/master/models/kangaroo-detector/model.json");
+    return model;
+  }
+
+#se abbiamo a disposizione nodejs possiamo far partire la web app nel seguente modo
+npm install
+npm test
+npm start build
+
+#tramite browser ci possiamo collegare al servizio esposto da node js-> http://ipAddress_serverNodejs:portaSuCuiStaInAscoltoNodejs
+########################UTILIZZO
 

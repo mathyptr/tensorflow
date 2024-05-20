@@ -12,6 +12,7 @@ cd /home
 mkdir mathy
 cd mathy
 
+#scarico la web app di Zanini
 git clone https://github.com/hugozanini/TFJS-object-detection
 
 #vi tensorflow/src/index.js
@@ -44,5 +45,5 @@ npm test
 
 npm start build
 
-npm run build
+#npm run build
 

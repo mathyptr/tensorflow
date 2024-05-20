@@ -1,3 +1,4 @@
+docker run  -it --name myconverter my_ubuntu/tensorflow /bin/bash
 ************************************************************
 su docker tensorflow
 mkdir mathy
