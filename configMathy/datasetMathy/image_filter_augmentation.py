@@ -11,15 +11,15 @@ NAME = 'Image Filter'
 DESR = 'A set of image filters.'
 VERSION = '0.1.1'
 FILTERS = {
-    'grey': 'Greyscale',
-    'hand_drawn': 'HandDrawn',
-    'contour': 'Contour',
+     'grey': 'Greyscale',
+#    'hand_drawn': 'HandDrawn',
+#    'contour': 'Contour',
     'edge_enhance': 'EdgeEnhance',
     'edge_enhance_more': 'EdgeEnhanceMore',
 #    'emboss': 'Emboss',
     'smooth': 'Smooth',
     'sharpen': 'Sharpen',
-    'emboss_45d': 'Emboss45d',
+#    'emboss_45d': 'Emboss45d',
     'sharp_edge': 'SharpEdge',
     'sharp_center': 'SharpCenter',
 }
@@ -31,6 +31,14 @@ class Emboss45DegreeFilter(ImageFilter.BuiltinFilter):
                 -1, -1, 0,
                 -1, 1, 1,
                 0, 1, 1
+        )
+
+class DiffHorizFilter(ImageFilter.BuiltinFilter):
+        name = "Diff_Horiz_Filter"
+        filterargs = (3, 3), 1, 0, (
+                1, 1, 2,
+                1, 1, 1,
+                1, 1, 1
         )
 
 class SharpEdgeFilter(ImageFilter.BuiltinFilter):
@@ -109,11 +117,15 @@ def SharpEdge(image)-> Image:
 def SharpCenter(image)-> Image:
     return image.convert('RGB').filter(SharpCenterFilter)
 
+def DiffHoriz(image)-> Image:
+    return image.convert('RGB').filter(DiffHorizFilter)
+
+
 def myfilter(image,filtertype)-> Image:
     if filtertype == 'grey':
             im=Greyscale(image)
-    elif filtertype == 'hand_drawn':
-            im=HandDrawn(image)
+#    elif filtertype == 'hand_drawn':
+#            im=HandDrawn(image)
     elif filtertype == 'contour':
             im=Contour(image)
     elif filtertype == 'edge_enhance':
@@ -122,14 +134,16 @@ def myfilter(image,filtertype)-> Image:
             im=EdgeEnhanceMore(image)
 #    elif filtertype == 'emboss':
 #            im=Emboss(image)
+    elif filtertype == 'Diff_Horiz_Filter':
+            im=DiffHoriz(image)
     elif filtertype == 'smooth':
             im=Smooth(image)
     elif filtertype == 'smooth_more':
             im=SmoothMore(image)
     elif filtertype == 'sharpen':
             im=Sharpen(image)
-    elif filtertype == 'emboss_45d':
-            im=Emboss45d(image)
+#    elif filtertype == 'emboss_45d':
+#            im=Emboss45d(image)
     elif filtertype == 'sharp_edge':
             im=SharpEdge(image)
     elif filtertype == 'sharp_center':
@@ -170,8 +184,8 @@ def parse_args(args):
     print("probability "+args.augmentation)
     augmen=args.augmentation
     augmen.upper()
-    probability=int(args.probability)
-    nsample=int(args.nsample)
+    probability=0
+    nsample=0
     if not augmen and (augmen!='Y' and augmen!='N'):
         print("ERR1")
         print(augmen)
@@ -179,11 +193,14 @@ def parse_args(args):
         show_filters()
         return None
     if augmen =="Y":
-         if probability>1 or probability<0:
-            print("ERR2")
-            usage()
-            show_filters()
-            return None
+        probability=int(args.probability)
+        nsample=int(args.nsample)
+
+        if probability>1 or probability<0:
+           print("ERR2")
+           usage()
+           show_filters()
+           return None
 
     output_type = os.path.splitext(args.input)[1].strip('.')
     suffix=args.suffix
