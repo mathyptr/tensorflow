@@ -1,4 +1,4 @@
-##Contenuto delle cartelle:
+## Contenuto delle cartelle:
 
 _configMathy/config:_
 * training.txt: file contenente tutti i comandi necessari per effettuare l'istruzione della rete (da me effettuata su Colab) e per il successivo utilizzo.
