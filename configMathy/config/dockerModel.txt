@@ -1,19 +1,7 @@
-docker pull node
-docker images
-docker run -it --name mynodetest node /bin/bash
-docker attach mynodetest
-Ctrl-P Ctrl-Q
-docker stop mynodetest
-docker rm mynodetest
-D:\docker\tensorflow>docker cp myweb_model d09e96237178:/home/node/TFJS-object-detection/models
-
-#sotto linux usa sudo docker  ...
-#sotto windows apri cmd in modalità amministratore
-
 **************************************************************************
 CONTAINER NODEJS
-**************************************************************************
 docker run -p 8765:8080 -it --name mynodetest node /bin/bash
+**************************************************************************
 
 cd /home/node
 git clone https://github.com/hugozanini/TFJS-object-detection
