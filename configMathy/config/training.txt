@@ -212,6 +212,12 @@ files.download("/content/saved_model.zip")
 
 
 ########################CONVERSIONE
+virtualenv -p python3 venv
+source venv/bin/activate
+pip install tensorflowjs[wizard]
+
+#questo comando da errore (sembra funzioni "spesso con python 3.6.8)
+tensorflowjs_wizard
 
 #se hai effettuato il training in locale per la conversione usa questo comando
 tensorflowjs_converter     --input_format=tf_saved_model     --output_format=tfjs_graph_model     --signature_name=serving_default     --saved_model_tags=serve     /content/inference_graph/saved_model/     /content/mykangaroo/myweb_model
