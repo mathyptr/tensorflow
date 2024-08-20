@@ -15,10 +15,14 @@ train_labels='/content/dataset/train_labels.csv'
 test_labels='/content/dataset/test_labels.csv'
 dataset_images='/content/dataset/images'
 
-pipeline_config_path = 'mobilenet_v2.config'
+pipeline_config_path = '/content/mobilenet_v2.config'
 fine_tune_checkpoint = '/content/mobilenet_v2/mobilenet_v2.ckpt-1'
 
 output_directory = 'inference_graph'
+
+logfile_training="/content/log/traininglog.txt"
+logfile_validate="/content/log/validatelog.txt"
+logfile_export="/content/log/exportlog.txt"
 
 def setConfigFile():
  with open(pipeline_config_path) as f:
