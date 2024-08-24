@@ -8,8 +8,8 @@ import time
 file_cmd= '/content/cmd/cmdfile.txt'
 script_dir='/content/webmodel/'
 
-cmd=[sys.executable, script_dir+'webmodel.py']
-print("CMD: ",cmd)
+cmddownload=[sys.executable, script_dir+'download_dir.py']
+print("CMD: ",cmddownload)
 while True:
     try:
         f = open(file_cmd, "r")
@@ -22,11 +22,11 @@ while True:
             f.writelines("START DOWNLOAD MODEL")
             f.close()
 
-            with subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True) as proc:
+            with subprocess.Popen(cmddownload, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True) as proc:
                 for line in proc.stderr:
                  print(line)
                 stdout, stderr = proc.communicate()
-            result = subprocess.CompletedProcess(cmd, proc.returncode, stdout, stderr)
+            result = subprocess.CompletedProcess(cmddownload, proc.returncode, stdout, stderr)
 
             print("DOWNLOAD MODEL EXECUTED")
             f = open(file_cmd, "w")
