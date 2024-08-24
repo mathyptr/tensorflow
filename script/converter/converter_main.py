@@ -1,3 +1,4 @@
+#! /usr/bin/env python
 import sys
 import os
 import subprocess
@@ -37,4 +38,4 @@ while True:
     except FileNotFoundError:
         print('File CMD  does not exist')
 
-    time.sleep(1)
+    time.sleep(5)
