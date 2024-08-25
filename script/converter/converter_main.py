@@ -8,11 +8,11 @@ import time
 file_cmd= '/content/cmd/cmdfile.txt'
 script_dir='/content/converter/'
 
-cmddownload=[sys.executable, script_dir+'download_dir.py']
-converter_cmd=[sys.executable, script_dir+'converter.py']
-webmodel_cmd=[sys.executable, script_dir+'sendstartcmd.py']
+download_cmd=[sys.executable, script_dir+'download_dir.py']
+op1_cmd=[sys.executable, script_dir+'converter.py']
+nextphase_cmd=[sys.executable, script_dir+'sendstartcmd.py']
 
-print("CMD: ",converter_cmd)
+print("CMD: ",op1_cmd)
 while True:
     try:
         f = open(file_cmd, "r")
@@ -21,35 +21,35 @@ while True:
             f.close()        
             print("FIND CMD START")
 
-            print("START DOWNLOAD MODEL")
+            print("DOWNLOAD DATA")
             f = open(file_cmd, "w")
-            f.writelines("START DOWNLOAD MODEL")
+            f.writelines("DOWNLOAD DATA")
             f.close()
 
-            with subprocess.Popen(cmddownload, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True) as proc:
+            with subprocess.Popen(download_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True) as proc:
                 for line in proc.stderr:
                  print(line)
                 stdout, stderr = proc.communicate()
-            result = subprocess.CompletedProcess(cmddownload, proc.returncode, stdout, stderr)
+            result = subprocess.CompletedProcess(download_cmd, proc.returncode, stdout, stderr)
 
-            print("DOWNLOAD MODEL EXECUTED")
+            print("DOWNLOAD DATA EXECUTED")
             f = open(file_cmd, "w")
-            f.writelines("DOWNLOAD MODEL EXECUTED")
+            f.writelines("DOWNLOAD DATA EXECUTED")
             f.close()
 
 
 
 
-            print("START CONVERTER")
+            print("CONVERTER")
             f = open(file_cmd, "w")
-            f.writelines("START CONVERTER")
+            f.writelines("CONVERTER")
             f.close()
 
-            with subprocess.Popen(converter_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True) as proc:
+            with subprocess.Popen(op1_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True) as proc:
                 for line in proc.stdout:
                  print(line)
                 stdout, stderr = proc.communicate()
-            result = subprocess.CompletedProcess(converter_cmd, proc.returncode, stdout, stderr)
+            result = subprocess.CompletedProcess(op1_cmd, proc.returncode, stdout, stderr)
 
             print("CONVERTER EXECUTED")
             f = open(file_cmd, "w")
@@ -57,21 +57,22 @@ while True:
             f.close()
 
 
-            print("SEND WEBMODEL CMD")
+            print("SEND CMD NEXT PHASE")
             f = open(file_cmd, "w")
-            f.writelines("SEND WEBMODEL CMD")
+            f.writelines("SEND CMD NEXT PHASE")
             f.close()
 
-            with subprocess.Popen(webmodel_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True) as proc:
+            with subprocess.Popen(nextphase_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True) as proc:
                 for line in proc.stdout:
                  print(line)
                 stdout, stderr = proc.communicate()
-            result = subprocess.CompletedProcess(webmodel_cmd, proc.returncode, stdout, stderr)
+            result = subprocess.CompletedProcess(nextphase_cmd, proc.returncode, stdout, stderr)
 
-            print("SEND WEBMODEL CMD EXECUTED")
+            print("SEND CMD NEXT PHASE EXECUTED")
             f = open(file_cmd, "w")
-            f.writelines("SEND WEBMODEL CMD EXECUTED")
+            f.writelines("SEND CMD NEXT PHASE EXECUTED")
             f.close()
+
 
 
 
