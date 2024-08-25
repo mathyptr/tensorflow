@@ -17,4 +17,13 @@ output_directory = 'inference_graph'
 logfile_training="/content/log/traininglog.txt"
 logfile_validate="/content/log/validatelog.txt"
 logfile_export="/content/log/exportlog.txt"
+logfile_download="/content/log/download.txt"
+logfile_sendstartcmd="/content/log/sendstartcmd.txt"
+
+
+augmentation_srv='http://172.17.0.2/'
+download_URL=augmentation_srv+'dataset'
+converter_srv='http://172.17.0.4/'
+startcmd=converter_srv+'cgi-bin/startcmd.py'
+
 
