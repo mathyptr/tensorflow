@@ -20,9 +20,3 @@ _configMathy/dataset:_
 _kangaroodataset:_
 * Cartella contente il dataset necessario al riconoscimento dei canguri  
 
-
-
-_nella cartella principale sono presenti altri file:_
-* trainingAndValidate.py: script utilizzato dopo il training della rete come verifica di correttezza; 
-* labelmap.pbtxt: file per definire le classi che saranno utilizzate durante la fase di addestramento (nel nostro caso la sola classe dei kangaroo);
-* Dockerfile: immagine docker per effettuare l'addestramento della rete. Deve poi essere eseguito lo script configTensor.sh (problemi durante il tentativo di installazione dell'ultima versione di python)
