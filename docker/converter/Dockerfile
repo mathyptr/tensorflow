@@ -5,6 +5,9 @@ RUN DEBIAN_FRONTEND="noninteractive" apt-get -y install tzdata git wget vim
 
 RUN pip install tensorflowjs[wizard]
 
-RUN (mkdir /content && mkdir /content/cmd    && mkdir /content/log && chmod g+w /content/cmd) 
+RUN (mkdir /content && mkdir /content/cmd  && mkdir /content/log && chmod g+w /content/cmd && mkdir /content/cgi-bin) 
 WORKDIR /content
+
+RUN ( wget  https://github.com/mathyptr/tensorflow/archive/refs/heads/master.zip && unzip -j  master.zip tensorflow-main/script/converter/* -d converter && rm master.zip && cp /content/converter/startcmd.py cgi-bin/ && chmod g+x /content/cgi-bin/startcmd.py)
+
 
