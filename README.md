@@ -50,7 +50,7 @@ addestrato e convertito
 All’interno di questo container sono presenti tutte le risorse necessarie alla fruizione della web app.
 
 
-* _models:_
+_models:_
 
-* _script:_
+_script:_
 
