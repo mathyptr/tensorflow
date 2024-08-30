@@ -26,4 +26,12 @@ download_URL=augmentation_srv+'dataset'
 converter_srv='http://172.17.0.4/'
 startcmd=converter_srv+'cgi-bin/startcmd.py'
 
+out_dir='/content/inference_graph/'
+download_path='/content/dataset/'
+token_in_file=download_path+'token.txt'
+token_out_file=out_dir +'token.txt'
+
+
+mysecret="mx4JncNOPY0ZwvU1B7re6KGH3GDTULs6"
+
 
