@@ -1,0 +1,34 @@
+item {
+    name: "venere"
+    id: 1
+}
+
+item {
+    name: "zefiro"
+    id: 2 
+}
+
+item {
+    name: "ora"
+    id: 3
+}
+
+item {
+    name: "battista"
+    id: 4
+}
+
+item {
+    name: "federico"
+    id: 5 
+}
+
+item {
+    name: "angelo"
+    id: 6
+}
+
+item {
+    name: "madonna"
+    id: 7
+}
