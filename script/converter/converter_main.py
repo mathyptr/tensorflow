@@ -4,15 +4,18 @@ import os
 import subprocess
 import re
 import time
+from config import *
+from tokenJWT import *
+from util import *
 
-file_cmd= '/content/cmd/cmdfile.txt'
-script_dir='/content/converter/'
 
 download_cmd=[sys.executable, script_dir+'download_dir.py']
-op1_cmd=[sys.executable, script_dir+'converter.py']
+op1_cmd=['rm','-r',tmp_dir]
+op2_cmd=['rm','-r',work_dir]
+op3_cmd=['mv',download_dir,home_dir]
+op4_cmd=[sys.executable, script_dir+'converter.py']
 nextphase_cmd=[sys.executable, script_dir+'sendstartcmd.py']
 
-print("CMD: ",op1_cmd)
 while True:
     try:
         f = open(file_cmd, "r")
@@ -21,60 +24,32 @@ while True:
             f.close()        
             print("FIND CMD START")
 
-            print("DOWNLOAD DATA")
-            f = open(file_cmd, "w")
-            f.writelines("DOWNLOAD DATA")
-            f.close()
+            write_status("CLEAN DOWNLOAD DIR")
+            exec_cmd(op1_cmd) 
 
-            with subprocess.Popen(download_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True) as proc:
-                for line in proc.stderr:
-                 print(line)
-                stdout, stderr = proc.communicate()
-            result = subprocess.CompletedProcess(download_cmd, proc.returncode, stdout, stderr)
+            write_status("DOWNLOAD DATA")
+            exec_cmd(download_cmd) 
+            write_status("DOWNLOAD DATA EXECUTED")
 
-            print("DOWNLOAD DATA EXECUTED")
-            f = open(file_cmd, "w")
-            f.writelines("DOWNLOAD DATA EXECUTED")
-            f.close()
+            try:                         
+                checkToken()
 
+                write_status("CLEAN WORKING DIR")
+                exec_cmd(op2_cmd) 
+                exec_cmd(op3_cmd) 
+                write_status("CLEAN WORKING DIR")
 
+                write_status("CONVERTER")
+                exec_cmd(op4_cmd) 
+                write_status("CONVERTER EXECUTED")
 
+                createToken()
 
-            print("CONVERTER")
-            f = open(file_cmd, "w")
-            f.writelines("CONVERTER")
-            f.close()
-
-            with subprocess.Popen(op1_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True) as proc:
-                for line in proc.stdout:
-                 print(line)
-                stdout, stderr = proc.communicate()
-            result = subprocess.CompletedProcess(op1_cmd, proc.returncode, stdout, stderr)
-
-            print("CONVERTER EXECUTED")
-            f = open(file_cmd, "w")
-            f.writelines("CONVERTER EXECUTED")
-            f.close()
-
-
-            print("SEND CMD NEXT PHASE")
-            f = open(file_cmd, "w")
-            f.writelines("SEND CMD NEXT PHASE")
-            f.close()
-
-            with subprocess.Popen(nextphase_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True) as proc:
-                for line in proc.stdout:
-                 print(line)
-                stdout, stderr = proc.communicate()
-            result = subprocess.CompletedProcess(nextphase_cmd, proc.returncode, stdout, stderr)
-
-            print("SEND CMD NEXT PHASE EXECUTED")
-            f = open(file_cmd, "w")
-            f.writelines("SEND CMD NEXT PHASE EXECUTED")
-            f.close()
-
-
-
+                write_status("SEND CMD NEXT PHASE")
+                exec_cmd(nextphase_cmd) 
+                write_status("SEND CMD NEXT PHASE EXECUTED")
+            except:
+                print('Wrong token')
 
         else:
             f.close()
