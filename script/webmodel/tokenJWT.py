@@ -30,7 +30,7 @@ def checkToken():
     tokenfile.close()
 
     mypjwt=  PyJWT()
-    client_str=mypjwt.decode(client_str_cyper , mysecret, options={'verify_signature': False, 'verify_exp': False,'verify_aud': False, 'verify_iss': False, 'verify_nbf' : False},algorithms=["HS256"])
+    client_str=mypjwt.decode(client_str_cyper , mysecret, options={'verify_signature': True, 'verify_exp': True,'verify_aud': False, 'verify_iss': False, 'verify_nbf' : False},algorithms=["HS256"])
     print(client_str )
 
 

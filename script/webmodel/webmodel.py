@@ -4,7 +4,7 @@ import sys
 import os
 import subprocess
 import re
-from config_webmodel import *
+from config import *
 
 
 #Convert the model

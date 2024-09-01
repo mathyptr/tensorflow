@@ -3,12 +3,16 @@ import sys
 import os
 import subprocess
 import re
-import time
+from config import *
+from tokenJWT import *
+from util import *
 
-file_cmd= '/content/cmd/cmdfile.txt'
-script_dir='/content/webmodel/'
 
 download_cmd=[sys.executable, script_dir+'download_dir.py']
+op1_cmd=['rm','-r',tmp_dir]
+op2_cmd=['rm','-r',work_dir]
+op3_cmd=['mv',download_dir,home_dir]
+
 print("CMD: ",download_cmd)
 while True:
     try:
@@ -18,21 +22,21 @@ while True:
             f.close()        
             print("FIND CMD START")
 
-            print("START DOWNLOAD DATA")
-            f = open(file_cmd, "w")
-            f.writelines("START DOWNLOAD DATA")
-            f.close()
+            write_status("CLEAN DOWNLOAD DIR")
+            exec_cmd(op1_cmd)
 
-            with subprocess.Popen(download_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True) as proc:
-                for line in proc.stderr:
-                 print(line)
-                stdout, stderr = proc.communicate()
-            result = subprocess.CompletedProcess(download_cmd, proc.returncode, stdout, stderr)
 
-            print("DOWNLOAD DATA EXECUTED")
-            f = open(file_cmd, "w")
-            f.writelines("DOWNLOAD DATA EXECUTED")
-            f.close()
+            write_status("START DOWNLOAD DATA")
+            exec_cmd(download_cmd) 
+            write_status("DOWNLOAD DATA EXECUTED")
+
+
+            try:
+                checkToken()
+                exec_cmd(op2_cmd) 
+                exec_cmd(op3_cmd) 
+            except:
+                print('Wrong token')
 
 
         else:
