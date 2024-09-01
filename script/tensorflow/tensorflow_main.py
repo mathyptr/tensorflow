@@ -2,15 +2,19 @@ import sys
 import os
 import subprocess
 import re
-import time
 
-file_cmd= '/content/cmd/cmdfile.txt'
-script_dir='/content/tensorflow/'
+
+from config import *
+from tokenJWT import *
+from util import *
 
 download_cmd=[sys.executable, script_dir+'download_dir.py']
-op1_cmd=[sys.executable, script_dir + 'training.py']
-op2_cmd=[sys.executable, script_dir + 'validate.py']
-op3_cmd=[sys.executable, script_dir + 'export.py']
+op1_cmd=['rm','-r',tmp_dir]
+op2_cmd=['rm','-r',work_dir]
+op3_cmd=['mv',download_dir,home_dir]
+op4_cmd=[sys.executable, script_dir + 'training.py']
+op5_cmd=[sys.executable, script_dir + 'validate.py']
+op6_cmd=[sys.executable, script_dir + 'export.py']
 nextphase_cmd=[sys.executable, script_dir+'sendstartcmd.py']
 
 while True:
@@ -20,83 +24,42 @@ while True:
         if line.find("START")>-1 :
             f.close()        
             print("FIND CMD START")
+            write_status("CLEAN DOWNLOAD DIR")
+            exec_cmd(op1_cmd) 
 
-            print("DOWNLOAD DATA")
-            f = open(file_cmd, "w")
-            f.writelines("DOWNLOAD DATA")
-            f.close()
+            write_status("DOWNLOAD DATA")
+            exec_cmd(download_cmd) 
+            write_status("DOWNLOAD DATA EXECUTED")
 
-            with subprocess.Popen(download_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True) as proc:
-                for line in proc.stderr:
-                 print(line)
-                stdout, stderr = proc.communicate()
-            result = subprocess.CompletedProcess(download_cmd, proc.returncode, stdout, stderr)
+            try:
 
-            print("DOWNLOAD DATA EXECUTED")
-            f = open(file_cmd, "w")
-            f.writelines("DOWNLOAD DATA EXECUTED")
-            f.close()
+                checkToken()
 
+                write_status("CLEAN WORKING DIR")
+                exec_cmd(op2_cmd) 
+                exec_cmd(op3_cmd) 
+                write_status("CLEAN WORKING DIR")
 
-            print("TRAINING")
-            f = open(file_cmd, "w")
-            f.writelines("TRAINING")
-            f.close()
+                write_status("TRAINING")
+                exec_cmd(op4_cmd)
+                write_status("TRAINING EXECUTED")
 
-            with subprocess.Popen(op1_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True) as proc:
-                for line in proc.stdout:
-                 print(line)
-                stdout, stderr = proc.communicate()
-            result = subprocess.CompletedProcess(op1_cmd, proc.returncode, stdout, stderr)
+                write_status("VALIDATION")
+                exec_cmd(op5_cmd) 
+                write_status("VALIDATION EXECUTED")
 
-            print("TRAINING EXECUTED")
-            print("VALIDATION")
-            f = open(file_cmd, "w")
-            f.writelines("TRAINING EXECUTED")
-            f.writelines("VALIDATION")
-            f.close()
+                write_status("EXPORT")
+                exec_cmd(op6_cmd) 
+                write_status("EXPORT EXECUTED")
 
-            with subprocess.Popen(op2_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True) as proc:
-                for line in proc.stdout:
-                 print(line)
-                stdout, stderr = proc.communicate()
-            result = subprocess.CompletedProcess(op2_cmd, proc.returncode, stdout, stderr)
+                createToken()
 
-            print("VALIDATION EXECUTED")
-            print("EXPORT")
-            f = open(file_cmd, "w")
-            f.writelines("VALIDATION EXECUTED")
-            f.writelines("EXPORT")
-            f.close()
+                write_status("SEND CMD NEXT PHASE")
+                exec_cmd(nextphase_cmd) 
+                write_status("SEND CMD NEXT PHASE EXECUTED")
 
-            with subprocess.Popen(op3_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True) as proc:
-                for line in proc.stdout:
-                 print(line)
-                stdout, stderr = proc.communicate()
-            result = subprocess.CompletedProcess(op3_cmd, proc.returncode, stdout, stderr)
-
-            print("EXPORT EXECUTED")
-            f = open(file_cmd, "w")
-            f.writelines("EXPORT EXECUTED")
-            f.close()
-
-
-            print("SEND CMD NEXT PHASE")
-            f = open(file_cmd, "w")
-            f.writelines("SEND CMD NEXT PHASE")
-            f.close()
-
-            with subprocess.Popen(nextphase_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True) as proc:
-                for line in proc.stdout:
-                 print(line)
-                stdout, stderr = proc.communicate()
-            result = subprocess.CompletedProcess(nextphase_cmd, proc.returncode, stdout, stderr)
-
-            print("SEND CMD NEXT PHASE EXECUTED")
-            f = open(file_cmd, "w")
-            f.writelines("SEND CMD NEXT PHASE EXECUTED")
-            f.close()
-
+            except:
+                print('Wrong token')
 
         else:
             f.close()

@@ -1,5 +1,6 @@
 #Defining training parameters
 
+home_dir='/content/'
 train_record_path = '/content/dataset/train.record'
 test_record_path = '/content/dataset/test.record'
 model_dir = '/content/training/'
@@ -18,17 +19,25 @@ logfile_training="/content/log/traininglog.txt"
 logfile_validate="/content/log/validatelog.txt"
 logfile_export="/content/log/exportlog.txt"
 logfile_download="/content/log/download.txt"
+logfile_wget= '/content/log/wget.txt'
 logfile_sendstartcmd="/content/log/sendstartcmd.txt"
 
+file_cmd= '/content/cmd/cmdfile.txt'
+script_dir='/content/tensorflow/'
 
 augmentation_srv='http://172.17.0.2/'
-download_URL=augmentation_srv+'dataset'
+remote_path='dataset/'
+download_URL=augmentation_srv+remote_path
 converter_srv='http://172.17.0.4/'
 startcmd=converter_srv+'cgi-bin/startcmd.py'
 
+work_dir=home_dir+remote_path
+tmp_dir='/content/tmp/'
+download_dir=tmp_dir+remote_path
+
+
+token_in_file=download_dir+'token.txt'
 out_dir='/content/inference_graph/'
-download_path='/content/dataset/'
-token_in_file=download_path+'token.txt'
 token_out_file=out_dir +'token.txt'
 
 
