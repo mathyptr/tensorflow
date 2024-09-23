@@ -24,7 +24,7 @@ while True:
             f.close()        
             print("FIND CMD START")
 
-            write_status("CLEAN DOWNLOAD DIR")
+            write_status("CLEAN DOWLOAD DIR")
             exec_cmd(op1_cmd) 
 
             write_status("DOWNLOAD DATA")
@@ -34,10 +34,8 @@ while True:
             try:                         
                 checkToken()
 
-                write_status("CLEAN WORKING DIR")
                 exec_cmd(op2_cmd) 
                 exec_cmd(op3_cmd) 
-                write_status("CLEAN WORKING DIR")
 
                 write_status("CONVERTER")
                 exec_cmd(op4_cmd) 
