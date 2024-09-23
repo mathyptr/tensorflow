@@ -12,9 +12,11 @@ download_cmd=[sys.executable, script_dir+'download_dir.py']
 op1_cmd=['rm','-r',tmp_dir]
 op2_cmd=['rm','-r',work_dir]
 op3_cmd=['mv',download_dir,home_dir]
-op4_cmd=[sys.executable, script_dir + 'training.py']
-op5_cmd=[sys.executable, script_dir + 'validate.py']
-op6_cmd=[sys.executable, script_dir + 'export.py']
+op4_cmd=['cp',dataset_images+'/'+file_train_labels,train_labels]
+op5_cmd=['cp',dataset_images+'/'+file_test_labels,test_labels]
+op6_cmd=[sys.executable, script_dir + 'training.py']
+op7_cmd=[sys.executable, script_dir + 'validate.py']
+op8_cmd=[sys.executable, script_dir + 'export.py']
 nextphase_cmd=[sys.executable, script_dir+'sendstartcmd.py']
 
 while True:
@@ -38,18 +40,20 @@ while True:
                 write_status("CLEAN WORKING DIR")
                 exec_cmd(op2_cmd) 
                 exec_cmd(op3_cmd) 
+                exec_cmd(op4_cmd) 
+                exec_cmd(op5_cmd) 
                 write_status("CLEAN WORKING DIR")
 
                 write_status("TRAINING")
-                exec_cmd(op4_cmd)
+                exec_cmd(op5_cmd)
                 write_status("TRAINING EXECUTED")
 
                 write_status("VALIDATION")
-                exec_cmd(op5_cmd) 
+                exec_cmd(op6_cmd) 
                 write_status("VALIDATION EXECUTED")
 
                 write_status("EXPORT")
-                exec_cmd(op6_cmd) 
+                exec_cmd(op7_cmd) 
                 write_status("EXPORT EXECUTED")
 
                 createToken()

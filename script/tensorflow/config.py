@@ -6,12 +6,21 @@ test_record_path = '/content/dataset/test.record'
 model_dir = '/content/training/'
 labelmap_path = '/content/labelmap.pbtxt'
 
+
+file_train_labels='train_labels.csv'
+file_test_labels='test_labels.csv'
+
 train_labels='/content/dataset/train_labels.csv'
 test_labels='/content/dataset/test_labels.csv'
 dataset_images='/content/dataset/images'
 
 pipeline_config_path = '/content/mobilenet_v2.config'
 fine_tune_checkpoint = '/content/mobilenet_v2/mobilenet_v2.ckpt-1'
+#fine_tune_checkpoint = '/content/training_checkpoint/ckpt-1'
+#fine_tune_checkpoint = '/content/training_checkpoint/ckpt-3'
+fine_tune_checkpoint_type= 'classification'
+#fine_tune_checkpoint_type= 'detection'
+
 
 output_directory = 'inference_graph'
 

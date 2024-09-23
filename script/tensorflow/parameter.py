@@ -5,10 +5,10 @@ from config import *
 
 
 #Defining training parameters
-num_classes = 1
-batch_size = 10
-num_steps = 100
-num_eval_steps = 1000
+num_classes = 7
+batch_size = 34
+num_steps = 400
+num_eval_steps = 200
 
 
 def setConfigFile():
@@ -20,6 +20,8 @@ def setConfigFile():
   config = re.sub('label_map_path: ".*?"','label_map_path: "{}"'.format(labelmap_path), config)
   # Set fine_tune_checkpoint path
   config = re.sub('fine_tune_checkpoint: ".*?"','fine_tune_checkpoint: "{}"'.format(fine_tune_checkpoint), config)
+  # Set fine_tune_checkpoint_type 
+  config = re.sub('fine_tune_checkpoint_type: ".*?"','fine_tune_checkpoint_type: "{}"'.format(fine_tune_checkpoint_type), config)
   # Set train tf-record file path
   config = re.sub('(input_path: ".*?)(PATH_TO_BE_CONFIGURED/train)(.*?")','input_path: "{}"'.format(train_record_path), config)
   # Set test tf-record file path
