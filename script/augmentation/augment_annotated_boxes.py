@@ -120,17 +120,18 @@ if __name__ == '__main__':
         [all_transformed_class_labels.extend(transformed_class_labels_el) for transformed_class_labels_el in transformed_class_labels]
     print('Augmentation completed.')
 
-    print('Creating JSON annotations for augmentations')
-
     if args.output_type_csv:
+        print('Creating CSV annotations for augmentations')
         if args.single_file:
-            coco.save_csv_boxes(os.path.join(output_dir, "augmented_files.csv"), all_transformed_filenames,
+#            coco.save_csv_boxes(os.path.join(output_dir, "augmented_files.csv"), all_transformed_filenames,                             all_transformed_image_sizes, all_transformed_bboxes, all_transformed_class_labels)
+            coco.save_csv_boxes(output_dir,os.path.join(output_dir,"augmented_files.csv"), all_transformed_filenames,
                              all_transformed_image_sizes, all_transformed_bboxes, all_transformed_class_labels)
         else:
             coco.save_csv_boxes_files(output_dir, all_transformed_filenames,
                                    all_transformed_image_sizes, all_transformed_bboxes,
                                    all_transformed_class_labels)
     else:    
+        print('Creating JSON annotations for augmentations')
         if args.single_file:
             coco.save_coco_boxes(os.path.join(output_dir, "augmented_files.json"), all_transformed_filenames,
                              all_transformed_image_sizes, all_transformed_bboxes, all_transformed_class_labels)

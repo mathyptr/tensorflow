@@ -2,6 +2,8 @@ import json
 import pycocotools.coco as coco
 import os
 import csv
+import glob
+import pandas as pd
 
 class COCOManager:
     def __init__(self, input_file):
@@ -18,12 +20,7 @@ class COCOManager:
         _, filename = os.path.split(filename)
         bboxes = []
         titles = []
-        print("COCO Cat ID:")
-        print(self.annotations.getCatIds(['venere']))  
-        print(self.annotations.getCatIds(['zefiro']))  
-        for image in self.annotations.imgs.items():
-            print("Image:")
-            print(image )            
+        for image in self.annotations.imgs.items():        
             if filename == image[1]['file_name']:
                 img_id = image[1]['id']
                 img_desc = self.annotations.loadImgs(img_id)
@@ -31,22 +28,11 @@ class COCOManager:
                 anns = self.annotations.loadAnns(ann_ids)
                 cat_ids = [ann['category_id'] for ann in anns]
                 ann_names = self.annotations.loadCats(cat_ids)
-                print("Anns:")
-                print(anns)                   
-                print("Ann IDS:")
-                print(ann_ids)                  
-                print("Cat ID:")
-                print(cat_ids)  
-                print("Cat name:")
-                print(ann_names)  
-
                 for gt in anns:
                     object_name = [sub['name'] for sub in ann_names if sub['id'] == gt['category_id']]
                     bboxes.append(gt['bbox'])
                     titles.append(object_name[0])
                     # print(gt['bbox'], object_name)
-                    print("Annotations:")
-                    print(object_name )                      
         return bboxes, titles
 
     def get_all_images_annotation(self):
@@ -62,15 +48,11 @@ class COCOManager:
         for image in self.annotations.imgs.items():
             filename = image[1]['file_name']
             image_size = [image[1]['width'], image[1]['height']]
-            print("Annotation image size:")
-            print(image_size)
             img_bboxes, img_titles = self.get_image_annotations(filename)
             images.append(filename)
             image_sizes.append(image_size)
             bboxes.append(img_bboxes)
             titles.append(img_titles)
-            print("Title:")
-            print(img_titles)
         return images, image_sizes, bboxes, titles
 
 
@@ -109,8 +91,6 @@ class COCOManager:
         for class_list in classes:
             for class_name in class_list:
                 class_set.add(class_name)
-                print("Class name:")
-                print(class_name)
         all_classes = self.annotations.loadCats(self.annotations.getCatIds())
         for class_name in class_set:
             classes_data = dict()
@@ -129,18 +109,27 @@ class COCOManager:
             img_data['width'] = image_sizes[img_idx][0]
             img_data['height'] = image_sizes[img_idx][1]
             images_data.append(img_data)
+            bb=dict()
             for bbox_idx in range(len(bboxes[img_idx])):
                 bbox_data = dict()
                 bbox_data['id'] = annotation_id
                 annotation_id += 1
                 bbox_data['image_id'] = img_idx
-                bbox_data['bbox'] = bboxes[img_idx][bbox_idx]
+#MATHY
+                bb['xmin'] =int(bboxes[img_idx][bbox_idx][0]) 
+                bb['ymin'] =int(bboxes[img_idx][bbox_idx][1])
+                bb['width'] =int(bboxes[img_idx][bbox_idx][2])
+                bb['height'] =int(bboxes[img_idx][bbox_idx][3])  
+                bbox_data['bbox'] = bb
+#MATHY
+#MATHY                bbox_data['bbox'] = bboxes[img_idx][bbox_idx]
                 bbox_data['category_id'] = inverted_classes_data[classes[img_idx][bbox_idx]]
                 annotations.append(bbox_data)
         json_results['images'] = images_data
         json_results['annotations'] = annotations
         json_results['categories'] = categories
-
+#        print(json_results)
+#        print(filename)
         with open(filename, 'w') as outfile:
             json.dump(json_results, outfile)
 
@@ -188,12 +177,20 @@ class COCOManager:
             img_data['width'] = image_sizes[img_idx][0]
             img_data['height'] = image_sizes[img_idx][1]
             images_data.append(img_data)
+            bb=dict()
             for bbox_idx in range(len(bboxes[img_idx])):
                 bbox_data = dict()
                 bbox_data['id'] = annotation_id
                 annotation_id += 1
                 bbox_data['image_id'] = img_idx
-                bbox_data['bbox'] = bboxes[img_idx][bbox_idx]
+#MATHY
+                bb['xmin'] =int(bboxes[img_idx][bbox_idx][0]) 
+                bb['ymin'] =int(bboxes[img_idx][bbox_idx][1])
+                bb['width'] =int(bboxes[img_idx][bbox_idx][2])
+                bb['height'] =int(bboxes[img_idx][bbox_idx][3])   
+                bbox_data['bbox'] = bb
+#MATHY
+#MATHY           bbox_data['bbox'] = bboxes[img_idx][bbox_idx]
                 bbox_data['category_id'] = inverted_classes_data[classes[img_idx][bbox_idx]]
                 annotations.append(bbox_data)
 
@@ -205,7 +202,7 @@ class COCOManager:
                 json.dump(json_results, outfile)
 
 
-    def save_csv_boxes(self, filename, image_names, image_sizes, bboxes, classes):
+    def save_csv_boxesOLD(self, filename, image_names, image_sizes, bboxes, classes):
         '''
         Save COCO JSON files of annotations. A single JSON file may contain annotations of different images.
         :param filename: name of the COCO JSON file
@@ -243,7 +240,7 @@ class COCOManager:
         for img_idx in range(len(image_names)):
             img_data = dict()
 #            img_data['id'] = img_idx
-            img_data['file_name'] = image_names[img_idx]
+            img_data['filename'] = image_names[img_idx]
             img_data['width'] = image_sizes[img_idx][0]
             img_data['height'] = image_sizes[img_idx][1]
             img_data['class'] =categories[0]['name']
@@ -278,8 +275,60 @@ class COCOManager:
                 for row in images_data:
                     writer.writerow(row)  
 
+    def save_csv_boxes(self,output_dir, filename, image_names, image_sizes, bboxes, classes):
+        """Iterates through all COCO .json files (considers only BBOXES) in a given directory and combines
+        them in a single Pandas dataframe.
+    
+        Parameters:
+        ----------
+        path : str
+            The path containing the .xml files
+        Returns
+        -------
+        Pandas DataFrame
+            The produced dataframe
+        """
+        print('save_csv_boxes:')
+        print(output_dir)
+        filenamejson=os.path.join(output_dir, 'augmented_files.json')
+        print(filenamejson)
+        self.save_coco_boxes(filenamejson, image_names, image_sizes, bboxes, classes)
+        json_list = []
+        for json_file in glob.glob(output_dir + '/augmented_files.json'):
+            coco = COCOManager(json_file)
+            print(json_file)
+            images, images_sizes, bboxes, titles = coco.get_all_images_annotation()
+            for image_idx in range(len(images)):
+                filename = images[image_idx]
+                width = int(images_sizes[image_idx][0])
+                height = int(images_sizes[image_idx][1])
+                for bbox_idx in range(len(bboxes[image_idx])):
+                    xmin = int(bboxes[image_idx][bbox_idx]['xmin'])
+                    ymin = int(bboxes[image_idx][bbox_idx]['ymin'])
+                    xmax = int(xmin + bboxes[image_idx][bbox_idx]['width'])
+                    ymax = int(ymin + bboxes[image_idx][bbox_idx]['height'])
+                    name = titles[image_idx][bbox_idx]
+                    value = (filename,
+                             width,
+                             height,
+                             name,
+                             xmin,
+                             ymin,
+                             xmax,
+                             ymax,
+                             )
+                    json_list.append(value)
+        column_name = ['filename', 'width', 'height', 'class', 'xmin', 'ymin', 'xmax', 'ymax']
+        xml_df = pd.DataFrame(json_list, columns=column_name)
+        print(f'Processed {len(json_list)} JSON files.')
+        filenamecsv=os.path.join(output_dir, 'augmented_files.csv')
+        print(filenamecsv)
+        xml_df.to_csv(filenamecsv, index=None)
 
-    def save_csv_boxes_files(self, output_dir, image_names, image_sizes, bboxes, classes):
+
+
+
+    def save_csv_boxes_filesOLD(self, output_dir, image_names, image_sizes, bboxes, classes):
         '''
         Save the annotations of the selected images in separate csv files, one for each image
         :param output_dir: output directory where to store all the csv files

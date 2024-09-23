@@ -3,13 +3,19 @@ import sys
 import os
 import subprocess
 import re
-import time
 
-file_cmd= '/content/cmd/cmdfile.txt'
-script_dir='/content/augmentation/'
+from config import *
+from tokenJWT import *
+from util import *
+
 
 download_cmd=[sys.executable, script_dir+'download_dir.py']
-op1_cmd=[sys.executable, script_dir+'augmentation.py']
+op1_cmd=['rm','-r',tmp_dir]
+op2_cmd=['rm','-r',work_dir]
+op3_cmd=['mkdir',work_dir]
+op4_cmd=['mv',download_dir,home_dir]
+op5_cmd=[sys.executable, script_dir+'augmentation.py']
+op6_cmd=[sys.executable, script_dir+'split_train_test.py']
 nextphase_cmd=[sys.executable, script_dir+'sendstartcmd.py']
 
 print("CMD: ",op1_cmd)
@@ -21,57 +27,38 @@ while True:
             f.close()        
             print("FIND CMD START")
 
-            print("DOWNLOAD DATA")
-            f = open(file_cmd, "w")
-            f.writelines("DOWNLOAD DATA")
-            f.close()
+            write_status("CLEAN DOWNLOAD DIR")
+            exec_cmd(op1_cmd) 
 
-            with subprocess.Popen(download_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True) as proc:
-                for line in proc.stderr:
-                 print(line)
-                stdout, stderr = proc.communicate()
-            result = subprocess.CompletedProcess(download_cmd, proc.returncode, stdout, stderr)
+            write_status("DOWNLOAD DATA")
+            exec_cmd(download_cmd)
+            write_status("DOWNLOAD DATA EXECUTED")
+ 
+            try:
 
-            print("DOWNLOAD DATA EXECUTED")
-            f = open(file_cmd, "w")
-            f.writelines("DOWNLOAD DATA EXECUTED")
-            f.close()
+#                checkToken()
+                write_status("CLEAN WORKING DIR")
+                exec_cmd(op2_cmd) 
+                exec_cmd(op3_cmd) 
+                exec_cmd(op4_cmd)
+                write_status("CLEAN WORKING DIR")
 
+                write_status("AUGMENTATION")
+                exec_cmd(op5_cmd)
+                write_status("AUGMENTATION EXECUTED")
+ 
+                write_status("SPLIT TRAIN AND TEST")
+                exec_cmd(op6_cmd)
+                write_status("SPLIT TRAIN AND TEST EXECUTED")
 
-            print("AUGMENTATION")
-            f = open(file_cmd, "w")
-            f.writelines("AUGMENTATION")
-            f.close()
+                createToken()
 
-            with subprocess.Popen(op1_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True) as proc:
-                for line in proc.stdout:
-                 print(line)
-                stdout, stderr = proc.communicate()
-            result = subprocess.CompletedProcess(op1_cmd, proc.returncode, stdout, stderr)
+                write_status("SEND CMD NEXT PHASE")
+                exec_cmd(nextphase_cmd) 
+                write_status("SEND CMD NEXT PHASE EXECUTED")
 
-            print("AUGMENTATION EXECUTED")
-            f = open(file_cmd, "w")
-            f.writelines("AUGMENTATION EXECUTED")
-            f.close()
-
-
-            print("SEND CMD NEXT PHASE")
-            f = open(file_cmd, "w")
-            f.writelines("SEND CMD NEXT PHASE")
-            f.close()
-
-            with subprocess.Popen(nextphase_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True) as proc:
-                for line in proc.stdout:
-                 print(line)
-                stdout, stderr = proc.communicate()
-            result = subprocess.CompletedProcess(nextphase_cmd, proc.returncode, stdout, stderr)
-
-            print("SEND CMD NEXT PHASE EXECUTED")
-            f = open(file_cmd, "w")
-            f.writelines("SEND CMD NEXT PHASE EXECUTED")
-            f.close()
-
-
+            except:
+                print('Wrong token')
 
         else:
             f.close()

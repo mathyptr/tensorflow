@@ -1,6 +1,6 @@
 
 
-from config_augmentation import *
+from config import *
 
 
 augmented_file=imageout_dir+'/augmented_files.csv'

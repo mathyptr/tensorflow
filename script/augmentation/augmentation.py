@@ -2,14 +2,14 @@ import sys
 import os
 import subprocess
 import re
-from config_augmentation import *
+from config import *
 
 #Image Augmentation
 print("<---------------START AUGMENTATION--------->")
 
 f = open(logfile_augmentation, "w")
 
-cmd=[sys.executable, '/content/augmentation/augment_annotated_boxes.py',image_coco_json,imageout_dir,'-n',str(num_iterations),'-s']
+cmd=[sys.executable, '/content/augmentation/augment_annotated_boxes.py',image_coco_json,imageout_dir,'-n',str(num_iterations),'-s','-c']
 
 with subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True) as proc:
     for line in proc.stderr:
