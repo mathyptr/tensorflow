@@ -6,10 +6,6 @@ test_record_path = '/content/dataset/test.record'
 model_dir = '/content/training/'
 labelmap_path = '/content/labelmap.pbtxt'
 
-
-file_train_labels='train_labels.csv'
-file_test_labels='test_labels.csv'
-
 train_labels='/content/dataset/train_labels.csv'
 test_labels='/content/dataset/test_labels.csv'
 dataset_images='/content/dataset/images'

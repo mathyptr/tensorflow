@@ -7,8 +7,8 @@ from config import *
 #Defining training parameters
 num_classes = 7
 batch_size = 34
-num_steps = 400
-num_eval_steps = 200
+num_steps = 100
+num_eval_steps = 00
 
 
 def setConfigFile():
