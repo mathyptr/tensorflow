@@ -21,6 +21,10 @@ _docker:_
 Cartella contente i docker file dei container utilizzati (Augmentation,Tensorflow,Tensorflow converter,Web-model,Smartlen-app)
 
 
+<img src="img/architettura.png?raw=true" width="320" height="240"> &nbsp;
+
+
+
 * Augmentation
 Questo container si occupa della realizzazione del dataset necessario alla creazione del modello ap-
 plicando tecniche di augmentation a partire dalle immagini originali fornite. Il servizio presente
@@ -53,4 +57,6 @@ All’interno di questo container sono presenti tutte le risorse necessarie alla
 _models:_
 
 _script:_
+Cartella contente i vari script utilizzati dai container Augmentation,Tensorflow,Tensorflow converter,Web-model.
+Occore personalizzare il file config.py di ciascuno in modo che possano 
 
