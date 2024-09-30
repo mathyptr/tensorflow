@@ -21,7 +21,7 @@ _docker:_
 Cartella contente i docker file dei container utilizzati (Augmentation,Tensorflow,Tensorflow converter,Web-model,Smartlen-app)
 
 
-<img src="img/architettura.png?raw=true" width="320" height="240"> &nbsp;
+<img src="img/architettura.png?raw=true" width="520" height="340"> &nbsp;
 
 
 
