@@ -21,7 +21,7 @@ _docker:_
 Cartella contente i docker file dei container utilizzati (Augmentation,Tensorflow,Tensorflow converter,Web-model,Smartlen-app)
 
 
-<img src="img/architettura.png?raw=true" width="520" height="340"> &nbsp;
+<img src="img/architettura.png?raw=true" width="620" height="440"> &nbsp;
 
 
 
@@ -55,6 +55,7 @@ All’interno di questo container sono presenti tutte le risorse necessarie alla
 
 
 _models:_
+Cartella contenente i repository dei modelli TensorFlow
 
 _script:_
 Cartella contente i vari script utilizzati dai container Augmentation,Tensorflow,Tensorflow converter,Web-model.
