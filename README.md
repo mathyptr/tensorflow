@@ -58,5 +58,12 @@ _models:_
 
 _script:_
 Cartella contente i vari script utilizzati dai container Augmentation,Tensorflow,Tensorflow converter,Web-model.
-Occore personalizzare il file config.py di ciascuno in modo che possano 
+Occore configurare ciascun servizio modificando il file config.py in modo che possa comunicare con il servizio
+che lo precede e con quello che lo segue.
+Ad esempio il servizio presente nel container Tensorflow scaricherà le immagini e il file coco dal servizio
+Augmentation e per far questo deve essere configurato il parametro:
+augmentation_srv='http://AUGMENTATION_SRV-IP-ADDRESS/'
+Il container Tensorflow al termine del training dovrà informare di ciò il container Converter e per far questo deve
+essere configurato il parametro:
+converter_srv='http://CONVERTER_SRV-IP-ADDRESS/'
 
