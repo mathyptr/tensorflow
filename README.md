@@ -54,6 +54,8 @@ addestrato e convertito
 * Smartlen-app
 All’interno di questo container sono presenti tutte le risorse necessarie alla fruizione della web app.
 
+Per garantire l'autenticità dei dati prodotti ciascun servizio genera un token JWT, firmandolo e impostando la sua scadenza.
+Questo token sarà verificato dal servizio che utilizzerà tali dati (verrà verificata anche scadenza del token)
 
 _models:_
 
@@ -72,4 +74,6 @@ augmentation_srv='http://AUGMENTATION_SRV-IP-ADDRESS/'
 Il container Tensorflow al termine del training dovrà informare di ciò il container Converter e per far questo deve
 essere configurato il parametro:
 converter_srv='http://CONVERTER_SRV-IP-ADDRESS/'
+
+Sempre nel file config.py dovrà essere inserita la chiave privata utilizzata per firmare il token JWT.
 
