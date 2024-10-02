@@ -13,6 +13,6 @@ RUN ( wget  https://github.com/mathyptr/tensorflow/archive/refs/heads/master.zip
 RUN echo "python3 -m http.server --cgi 80&" > /content/start.sh
 && echo "python3 converter/converter_main.py" >> /content/start.sh
 && chmod u+x /content/start.sh
-CMD /content/start.sh
+#CMD /content/start.sh
 
 
