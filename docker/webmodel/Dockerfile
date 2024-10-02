@@ -15,7 +15,7 @@ RUN (rm master.zip && rm -r tensorflow-main)
 RUN echo "python3 -m http.server --cgi 80&" > /content/start.sh
 && echo "python3 webmodel/webmodel_main.py" >> /content/start.sh
 && chmod u+x /content/start.sh
-CMD /content/start.sh
+#CMD /content/start.sh
 
 EXPOSE 80
 
