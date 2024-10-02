@@ -6,9 +6,7 @@ In questo lavoro viene proposta una soluzione per la realizzazione di un’appli
 Per perseguire questi obiettivi è stata addestrata la rete `SSD/MobileNetV2` applicando tecniche di
 object detection. In particolare viene effettuato un fine tuning sulla rete in questione al fine di addestrarla a riconoscere gli oggetti di interesse.
 
-Sono poi analizzate tutte le fasi del processo di training, per il quale viene utilizzata un’architettura a microservizi implementata tramite l’utilizzo di container `Docker`.
-
-Successivamente viene esposta una possibile automatizzazione dell’addestramento.
+Sono state analizzate tutte le fasi del processo di training, per il quale viene utilizzata un’architettura a microservizi implementata tramite l’utilizzo di container `Docker`.
 
 Dopo aver ottenuto il modello personalizzato, è stato realizzato il codice necessario all’implementazione dell’applicativo di cui sono illustrate le sezioni principali e le tecnologie utilizzate.
 
