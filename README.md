@@ -20,6 +20,19 @@ Lo schema nella seguente figura sintetizza l’architettura che è stata svilupp
 
 <img src="img/architettura.png?raw=true" width="720" height="540"> &nbsp;
 
+
+In ogni container è presente un servizio in ascolto sulla porta 80.
+Il container Tensorflow espone anche la porta 81 per interagire con Tensorboard.
+
+Per garantire l'autenticità dei dati prodotti ciascun servizio genera un token `JWT`, firmandolo e impostando la sua scadenza.
+Questo token sarà verificato dal servizio che utilizzerà tali dati (verrà verificata anche la scadenza del token).
+
+Esempio di token `JWT`
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjc5MzgwNjQuODU5NDY0LCJpYXQiOjE3Mjc4NTE2NjQuODU5NDYsImlzcyI6ImF1Z21lbnRvciIsImNtZCI6InN0YXJ0IiwiYXVkIjoiaHR0cHM6Ly8xNzIuMTAuMC4zL2NnaS1iaW4vc3RhcnRjbWQucHkifQ.BTLBHFmZa1jtqkmK1GAvfIX626xjLdBkkOHboxM6KHY
+
+{'exp': 1727938064.859464, 'iat': 1727851664.85946, 'iss': 'augmentor', 'cmd': 'start', 'aud': 'https://172.10.0.3/cgi-bin/startcmd.py'}
+
+
 I container realizzati sono i seguenti:
 
 ###  Augmentation
@@ -39,21 +52,6 @@ Questo container renderà il modello disponibile tramite un servizio REST. Per e
 
 ###  Smartlen-app
 All’interno di questo container sono presenti tutte le risorse necessarie alla fruizione della web app.
-
-
-
-
-In ogni container è presente un servizio in ascolto sulla porta 80.
-Il container Tensorflow espone anche la porta 81 per interagire con Tensorboard.
-
-Per garantire l'autenticità dei dati prodotti ciascun servizio genera un token `JWT`, firmandolo e impostando la sua scadenza.
-Questo token sarà verificato dal servizio che utilizzerà tali dati (verrà verificata anche la scadenza del token).
-
-Esempio di token `JWT`
-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjc5MzgwNjQuODU5NDY0LCJpYXQiOjE3Mjc4NTE2NjQuODU5NDYsImlzcyI6ImF1Z21lbnRvciIsImNtZCI6InN0YXJ0IiwiYXVkIjoiaHR0cHM6Ly8xNzIuMTAuMC4zL2NnaS1iaW4vc3RhcnRjbWQucHkifQ.BTLBHFmZa1jtqkmK1GAvfIX626xjLdBkkOHboxM6KHY
-
-{'exp': 1727938064.859464, 'iat': 1727851664.85946, 'iss': 'augmentor', 'cmd': 'start', 'aud': 'https://172.10.0.3/cgi-bin/startcmd.py'}
-
 
 ## Frontend
 Il codice dell’applicativo lato utente si basa su ReInHerit, un progetto Horizon2020 che propone un modello innovativo di gestione sostenibile del patrimonio. In particolare come punto di partenza è stata utilizzata Smart Lens, un’applicazione che fornisce informazioni multimediali sui dettagli riconosciuti, diventando una guida visiva interattiva per qualsiasi insieme di opere d’arte.  Il codice open source è stato quindi opportunamente ampliato e modificato per adattarlo ai requisiti di questo progetto.
