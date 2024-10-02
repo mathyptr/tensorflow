@@ -91,7 +91,7 @@ Cartella contenente i repository dei modelli TensorFlow
 _script:_
 
 Cartella contente i vari script utilizzati dai container Augmentation,Tensorflow,Tensorflow converter,Web-model.
-Occore configurare ciascun servizio modificando il file `config.py` in modo che possa comunicare con il servizio che lo precede e con quello che lo segue.
+Occorre configurare ciascun servizio modificando il file `config.py` in modo che possa comunicare con il servizio che lo precede e con quello che lo segue.
 
 In particolare:
 
