@@ -40,6 +40,9 @@ Questo container renderà il modello disponibile tramite un servizio REST. Per e
 ###  Smartlen-app
 All’interno di questo container sono presenti tutte le risorse necessarie alla fruizione della web app.
 
+
+
+
 In ogni container è presente un servizio in ascolto sulla porta 80.
 Il container Tensorflow espone anche la porta 81 per interagire con Tensorboard.
 
