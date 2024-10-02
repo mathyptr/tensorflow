@@ -30,5 +30,12 @@ RUN (cd /content/models/research/ && cp object_detection/packages/tf2/setup.py .
 RUN pip3.9 install tensorflow==2.13.1
 RUN python /content/models/research/object_detection/builders/model_builder_tf2_test.py
 
-EXPOSE 8080
+
+RUN echo "python -m http.server --cgi 80&" > /content/start.sh
+&& echo "tensorboard --logdir '/content/training/' --port=81 --host 0.0.0.0&" >> /content/start.sh
+&& echo "python /content/tensorflow/tensorflow_main.py" >> /content/start.sh
+&& chmod u+x /content/start.sh
+CMD /content/start.sh
+
+EXPOSE 80 81
 
