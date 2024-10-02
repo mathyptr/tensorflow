@@ -57,6 +57,8 @@ Il codice dell’applicativo lato utente si basa su ReInHerit, un progetto Horiz
 
 <img src="img/veneredettaglio.png?raw=true" width="720" height="540"> &nbsp;
 
+<img src="img/venere.png?raw=true" width="720" height="540"> &nbsp;
+
 
 ## Contenuto delle cartelle:
 
