@@ -1,3 +1,23 @@
+## Sistema per il riconoscimento di dettagli in opere d’arte
+
+
+In questo lavoro viene proposta una soluzione per la realizzazione di un’applicazione web che
+consenta il riconoscimento di dettagli all’interno di opere d’arte tramite l’ausilio di una webcam e
+per lo sviluppo di un intero sistema che permetta l’addestramento di una rete neurale.
+
+Per perseguire questi obiettivi è stata addestrata la rete SSD/MobileNetV2 applicando tecniche di
+object detection. In particolare viene effettuato un fine tuning sulla rete in questione al fine di adde-
+strarla a riconoscere gli oggetti di interesse.
+
+Sono poi analizzate tutte le fasi del processo di training, per il quale viene utilizzata un’architet-
+tura a microservizi implementata tramite l’utilizzo di container Docker.
+
+Successivamente viene esposta una possibile automatizzazione dell’addestramento.
+
+Dopo aver ottenuto il modello personalizzato, è stato realizzato il codice necessario all’implementa-
+zione dell’applicativo di cui sono illustrate le sezioni principali e le tecnologie utilizzate.
+
+
 ## Contenuto delle cartelle:
 
 
