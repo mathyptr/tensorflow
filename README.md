@@ -55,9 +55,9 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjc5MzgwNjQuODU5NDY0LCJpYXQiOjE
 ## Frontend
 Il codice dell’applicativo lato utente si basa su ReInHerit, un progetto Horizon2020 che propone un modello innovativo di gestione sostenibile del patrimonio. In particolare come punto di partenza è stata utilizzata Smart Lens, un’applicazione che fornisce informazioni multimediali sui dettagli riconosciuti, diventando una guida visiva interattiva per qualsiasi insieme di opere d’arte.  Il codice open source è stato quindi opportunamente ampliato e modificato per adattarlo ai requisiti di questo progetto.
 
-<img src="img/veneredettaglio.png?raw=true" width="720" height="540"> &nbsp;
-
 <img src="img/venere.png?raw=true" width="720" height="540"> &nbsp;
+
+<img src="img/veneredettaglio.png?raw=true" width="720" height="540"> &nbsp;
 
 
 ## Contenuto delle cartelle:
