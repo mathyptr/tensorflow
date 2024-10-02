@@ -55,7 +55,7 @@ addestrato e convertito
 All’interno di questo container sono presenti tutte le risorse necessarie alla fruizione della web app.
 
 Per garantire l'autenticità dei dati prodotti ciascun servizio genera un token JWT, firmandolo e impostando la sua scadenza.
-Questo token sarà verificato dal servizio che utilizzerà tali dati (verrà verificata anche scadenza del token)
+Questo token sarà verificato dal servizio che utilizzerà tali dati (verrà verificata anche la scadenza del token)
 
 _models:_
 
