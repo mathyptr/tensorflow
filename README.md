@@ -46,6 +46,7 @@ Tale container si occupa di effettuare la conversione del modello nel formato ut
 flow.js. Il servizio presente si pone in attesa di ricevere un comando di avvio dal microservizio
 Tensorflow per eseguire la conversione del modello. Al termine di tale procedura notificherà al mi-
 croservizo Web-Model la disponibilità del modello.
+
 Web Model
 Questo container renderà il modello disponibile tramite un servizio REST. Per effettuare tale opera-
 zione, è presente un servizio che si occupa di prelevare dal container Tensorflow Converter il modello
@@ -66,14 +67,22 @@ _script:_
 Cartella contente i vari script utilizzati dai container Augmentation,Tensorflow,Tensorflow converter,Web-model.
 Occore configurare ciascun servizio modificando il file config.py in modo che possa comunicare con il servizio
 che lo precede e con quello che lo segue.
+In particolare:
 
-Ad esempio il servizio presente nel container Tensorflow scaricherà le immagini e il file coco dal servizio
-Augmentation e per far questo deve essere configurato il parametro:
-augmentation_srv='http://AUGMENTATION_SRV-IP-ADDRESS/'
+Container Augmentation:
+ il servizio presente in questo container scaricherà le immagini e il file coco dal servizio Smartlen-app e per far questo dovrà essere configurato il parametro "smartlens_srv" (smartlens_srv='http://Smartlen-IP-ADDRESS/')
+ Al termine dell'elaborazione lo stesso servizio dovrà informare il container Tensorflow e per far questo dovrà essere configurato il parametro "tensorflow_srv" (tensorflow_srv='http://TENSORFLOW_SRV-IP-ADDRESS/')
 
-Il container Tensorflow al termine del training dovrà informare di ciò il container Converter e per far questo deve
-essere configurato il parametro:
-converter_srv='http://CONVERTER_SRV-IP-ADDRESS/'
+Container Tensorflow:
+ il servizio presente in questo container scaricherà le immagini e i file di training e test dal servizio Augmentation e per far questo dovrà essere configurato il parametro "Augmentation_srv" (augmentation_srv='http://AUGMENTATION_SRV-IP-ADDRESS/')
+ Al termine dell'esportazione questo servizio dovrà informare il container Converter e per far questo dovrà essere configurato il parametro "converter_srv" (converter_srv='http://CONVERTER_SRV-IP-ADDRESS/')
 
-Sempre nel file config.py dovrà essere inserita la chiave privata utilizzata per firmare il token JWT.
+Container Converter:
+ il servizio presente in questo container scaricherà il modello dal servizio Tensorflow e per far questo dovrà essere configurato il parametro "tensorflow_srv" (tensorflow_srv='http://TENSORFLOW_SRV-IP-ADDRESS/' )
+ Al termine della conversione dovrà informare il container WebModel e per far questo dovrà essere configurato il parametro "webmodel_srv" (webmodel_srv='http://WEBMODEL_SRV-IP-ADDRESS/')
+
+Container WebModel:
+ il servizio presente in questo container scaricherà il modello dal servizio Converter e per far questo dovrà essere configurato il parametro "converter_srv" (converter_srv='http://TENSORFLOW_SRV-IP-ADDRESS/)
+
+Sempre nel file config.py di ciscun container dovrà essere inserita la chiave privata utilizzata per firmare il token JWT.
 
