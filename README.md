@@ -57,12 +57,10 @@ Il codice dell’applicativo lato utente si basa su ReInHerit, un progetto Horiz
 
 All’avvio dell’applicazione web viene mostrato un carosello che permette la visualizzazione di alcune opere d’esempio riconoscibili dalla rete.
 
-Scorrendo con il mouse sopra a queste, viene suggerito di provare la guida interattiva e ciò è possibi-
-le cliccando su una delle opere come indicato nel paragrafo sottostante. Effettuando tale operazione,
+Scorrendo con il mouse sopra a queste, viene suggerito di provare la guida interattiva e ciò è possibile cliccando su una delle opere come indicato nel paragrafo sottostante. Effettuando tale operazione,
 verrà aperta la webcam del dispositivo dell’utente.
 
-Dopo aver inquadrato il dettaglio dell’opera d’arte di interesse, sarà possibile visualizzarne la de-
-scrizione completa.
+Dopo aver inquadrato il dettaglio dell’opera d’arte di interesse, sarà possibile visualizzarne la descrizione completa.
 
 <img src="img/veneredettaglio.png?raw=true" width="720" height="540"> &nbsp;
 
