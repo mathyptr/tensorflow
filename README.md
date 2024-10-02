@@ -22,7 +22,7 @@ zione dell’applicativo di cui sono illustrate le sezioni principali e le tecno
 
 
 _configMathy/config:_
-* training.txt: file contenente tutti i comandi necessari per effettuare l'istruzione della rete (da me effettuata su Colab) e per il successivo utilizzo;
+* training.txt: file contenente tutti i comandi necessari per effettuare l'istruzione della rete e per il successivo utilizzo;
 * dockerModel.txt: file contenente i comandi utilizzati per configurare la macchina docker che contiene il modello dei dati;
 * dockerTensorflow.txt: file contenente i comandi utilizzati per configurare la macchina docker a partire da un'immagine tensorflow che andrà poi ad interrogare il container con il modello dei dati;
 * dockerConverter.txt: file contenente i comandi utilizzati per configurare la macchina docker utilizzata per la conversione del dataset nel formato atteso da tensorflowjs.  
@@ -71,6 +71,7 @@ Questo token sarà verificato dal servizio che utilizzerà tali dati (verrà ver
 
 Esempio di token JWT
 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjc5MzgwNjQuODU5NDY0LCJpYXQiOjE3Mjc4NTE2NjQuODU5NDYsImlzcyI6ImF1Z21lbnRvciIsImNtZCI6InN0YXJ0IiwiYXVkIjoiaHR0cHM6Ly8xNzIuMTAuMC4zL2NnaS1iaW4vc3RhcnRjbWQucHkifQ.BTLBHFmZa1jtqkmK1GAvfIX626xjLdBkkOHboxM6KHY
+
 {'exp': 1727938064.859464, 'iat': 1727851664.85946, 'iss': 'augmentor', 'cmd': 'start', 'aud': 'https://172.10.0.3/cgi-bin/startcmd.py'}
 
 _models:_
