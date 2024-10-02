@@ -17,6 +17,7 @@ Dopo aver ottenuto il modello personalizzato, è stato realizzato il codice nece
 Il progetto è volto alla realizzazione di un’applicazione web che consenta il riconoscimento di dettagli all’interno di opere d’arte. Oltre alla sezione accessibile a qualsiasi utente che permette l’utilizzo della propria webcam per inquadrare l’opera di cui si desidera conoscere le informazioni, è presente
 anche una sezione privata riservata al personale del museo.
 Poiché in quest’ultima è possibile effettuare modifiche importanti alle informazioni delle opere e al contenuto della banca dati, vi si può accedere solo previa autenticazione.
+
 Lo schema nella seguente figura sintetizza l’architettura che è stata sviluppata per effettuare tutte le operazioni implementate.
 
 <img src="img/architettura.png?raw=true" width="720" height="540"> &nbsp;
