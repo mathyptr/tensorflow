@@ -35,7 +35,7 @@ RUN echo "python -m http.server --cgi 80&" > /content/start.sh
 && echo "tensorboard --logdir '/content/training/' --port=81 --host 0.0.0.0&" >> /content/start.sh
 && echo "python /content/tensorflow/tensorflow_main.py" >> /content/start.sh
 && chmod u+x /content/start.sh
-CMD /content/start.sh
+#CMD /content/start.sh
 
 EXPOSE 80 81
 
