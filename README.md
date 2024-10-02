@@ -46,36 +46,31 @@ Cartella contente i docker file dei container utilizzati (Augmentation,Tensorflo
 
 
 * Augmentation
-Questo container si occupa della realizzazione del dataset necessario alla creazione del modello ap-
-plicando tecniche di augmentation a partire dalle immagini originali fornite. Il servizio presente
-nel container in questione, resterà in attesa di un opportuno comando di avvio da parte del curatore
-o di un personale dedicato. A seguito della sua ricezione effettuerà il processo per l’aumento dei
-dati, al termine del quale provvederà ad attivare il servizio di addestramento presente nel container
-Tensorflow.
+Questo container si occupa della realizzazione del dataset necessario alla creazione del modello applicando tecniche di augmentation a partire dalle immagini originali fornite. Il servizio presente nel container in questione, resterà in attesa di un opportuno comando di avvio da parte del curatore
+o di un personale dedicato. A seguito della sua ricezione effettuerà il processo per l’aumento dei dati, al termine del quale provvederà ad attivare il servizio di addestramento presente nel container Tensorflow.
 
 * Tensorflow
-Container che svolge il ruolo centrale di tutta l’architettura contenendo l’ambiente e le risorse ne-
-cessarie all’addestramento della rete neurale. Il servizio presente al suo interno rimarrà in attesa di
-essere avviato dal servizio dedicato all’augmentation. Alla ricezione del comando di attivazione si
-occuperà di effettuare le varie fasi di addestramento della rete. Dopo aver terminato tali operazioni,
-avvierà il servizio di conversione presente nel container Tensorflow converter.
+Container che svolge il ruolo centrale di tutta l’architettura contenendo l’ambiente e le risorse necessarie all’addestramento della rete neurale. Il servizio presente al suo interno rimarrà in attesa di essere avviato dal servizio dedicato all’augmentation. Alla ricezione del comando di attivazione si
+occuperà di effettuare le varie fasi di addestramento della rete. Dopo aver terminato tali operazioni,avvierà il servizio di conversione presente nel container Tensorflow converter.
 
 * Tensorflow converter
-Tale container si occupa di effettuare la conversione del modello nel formato utilizzato da Tensor-
-flow.js. Il servizio presente si pone in attesa di ricevere un comando di avvio dal microservizio
-Tensorflow per eseguire la conversione del modello. Al termine di tale procedura notificherà al mi-
-croservizo Web-Model la disponibilità del modello.
+Tale container si occupa di effettuare la conversione del modello nel formato utilizzato da Tensorflow.js. Il servizio presente si pone in attesa di ricevere un comando di avvio dal microservizio
+Tensorflow per eseguire la conversione del modello. Al termine di tale procedura notificherà al microservizo Web-Model la disponibilità del modello.
 
 * Web Model
-Questo container renderà il modello disponibile tramite un servizio REST. Per effettuare tale opera-
-zione, è presente un servizio che si occupa di prelevare dal container Tensorflow Converter il modello
-addestrato e convertito
+Questo container renderà il modello disponibile tramite un servizio REST. Per effettuare tale operazione, è presente un servizio che si occupa di prelevare dal container Tensorflow Converter il modello addestrato e convertito
 
 * Smartlen-app
 All’interno di questo container sono presenti tutte le risorse necessarie alla fruizione della web app.
 
+In ogni container è presente un servizio in ascolto sulla porta 80.
+Il container Tensorflow espone anche la porta 81 per interagire con Tensorboard.
+
 Per garantire l'autenticità dei dati prodotti ciascun servizio genera un token JWT, firmandolo e impostando la sua scadenza.
-Questo token sarà verificato dal servizio che utilizzerà tali dati (verrà verificata anche la scadenza del token)
+Questo token sarà verificato dal servizio che utilizzerà tali dati (verrà verificata anche la scadenza del token).
+Esempio di tiken JWT
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjc5MzgwNjQuODU5NDY0LCJpYXQiOjE3Mjc4NTE2NjQuODU5NDYsImlzcyI6ImF1Z21lbnRvciIsImNtZCI6InN0YXJ0IiwiYXVkIjoiaHR0cHM6Ly8xNzIuMTAuMC4zL2NnaS1iaW4vc3RhcnRjbWQucHkifQ.BTLBHFmZa1jtqkmK1GAvfIX626xjLdBkkOHboxM6KHY
+{'exp': 1727938064.859464, 'iat': 1727851664.85946, 'iss': 'augmentor', 'cmd': 'start', 'aud': 'https://172.10.0.3/cgi-bin/startcmd.py'}
 
 _models:_
 
@@ -84,8 +79,7 @@ Cartella contenente i repository dei modelli TensorFlow
 _script:_
 
 Cartella contente i vari script utilizzati dai container Augmentation,Tensorflow,Tensorflow converter,Web-model.
-Occore configurare ciascun servizio modificando il file config.py in modo che possa comunicare con il servizio
-che lo precede e con quello che lo segue.
+Occore configurare ciascun servizio modificando il file config.py in modo che possa comunicare con il servizio che lo precede e con quello che lo segue.
 
 In particolare:
 
