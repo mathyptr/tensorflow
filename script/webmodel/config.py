@@ -1,4 +1,4 @@
-#Defining training parameters
+#Defining parameters
 
 home_dir='/content/'
 model_dir = '/content/model'
