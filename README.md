@@ -24,6 +24,10 @@ Lo schema nella seguente figura sintetizza l’architettura che è stata svilupp
 In ogni container è presente un servizio in ascolto sulla porta 80.
 Il container Tensorflow espone anche la porta 81 per interagire con Tensorboard.
 
+Una volta avviato un container, e configurati opportunamenti i vari parametri presenti nel file di configurazione (`config.py`), per far partire il servizio associato può essere lanciato il comando:
+`docker exec NOME_CONTAINER /bin/bash /content/start.sh`
+
+
 Per garantire l'autenticità dei dati prodotti ciascun servizio genera un token `JWT`, firmandolo e impostando la sua scadenza.
 Questo token sarà verificato dal servizio che utilizzerà tali dati (verrà verificata anche la scadenza del token).
 
