@@ -110,7 +110,7 @@ In particolare:
 
 ### Container WebModel:
 
- il servizio presente in questo container scaricherà il modello dal servizio Converter e per far questo dovrà essere configurato il parametro "converter_srv" (`converter_srv='http://TENSORFLOW_SRV-IP-ADDRESS/`).
+ il servizio presente in questo container scaricherà il modello dal servizio Converter e per far questo dovrà essere configurato il parametro "converter_srv" (`converter_srv='http://CONVERTER_SRV-IP-ADDRESS/'`).
 
 Sempre nel file `config.py` di ciscun container dovrà essere inserita la chiave privata (`mysecret`) utilizzata per firmare il token JWT.
 
