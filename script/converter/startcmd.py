@@ -13,6 +13,6 @@ Content-Type: text/html
 )
 
 
-f = open("/content/cmd/cmdfile.txt", "w")
+f = open("/var/www/cmd/cmdfile.txt", "w"
 f.write("START")
 f.close()
