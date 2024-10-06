@@ -4,7 +4,7 @@ import sys
 import os
 import subprocess
 import re
-from config_conv import *
+from config import *
 
 
 #SEND START CMD
