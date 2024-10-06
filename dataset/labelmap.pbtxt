@@ -1,15 +1,15 @@
 item {
-    name: "venere"
+    name: "venerebotticelli"
     id: 1
 }
 
 item {
-    name: "zefiro"
+    name: "zefirobotticelli"
     id: 2 
 }
 
 item {
-    name: "ora"
+    name: "orabotticelli"
     id: 3
 }
 
