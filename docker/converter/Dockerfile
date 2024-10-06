@@ -12,7 +12,7 @@ RUN wget  https://github.com/mathyptr/tensorflow/archive/refs/heads/master.zip
 RUN (unzip master.zip tensorflow-main/script/converter/* && mv tensorflow-main/script/converter . && cp /content/converter/startcmd.py /var/www/cgi-bin/ && chmod g+x /var/www/cgi-bin/startcmd.py)
 RUN (rm master.zip && rm -r tensorflow-main)
 
-RUN echo "python3 -m http.server --cgi 80&" > /content/start.sh && echo "python3 converter/converter_main.py" >> /content/start.sh && chmod u+x /content/start.sh
+RUN echo "python3 -m http.server --directory /var/www --cgi 80&" > /content/start.sh && echo "python3 converter/converter_main.py" >> /content/start.sh && chmod u+x /content/start.sh
 #CMD /content/start.sh
 
 
