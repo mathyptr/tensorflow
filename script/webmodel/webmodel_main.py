@@ -12,6 +12,7 @@ download_cmd=[sys.executable, script_dir+'download_dir.py']
 op1_cmd=['rm','-r',tmp_dir]
 op2_cmd=['rm','-r',work_dir]
 op3_cmd=['mv',download_dir,home_dir]
+op4_cmd=['mv',home_dir,out_dir]
 
 print("CMD: ",download_cmd)
 while True:
@@ -34,11 +35,11 @@ while True:
             try:
                 checkToken()
                 exec_cmd(op2_cmd) 
-                exec_cmd(op3_cmd) 
+                exec_cmd(op3_cmd)
             except:
                 print('Wrong token')
-
-
+#TODO        elif line.find("PUBLISH")>-1 :
+#TODO                exec_cmd(op4_cmd)  
         else:
             f.close()
     except FileNotFoundError:
