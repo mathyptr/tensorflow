@@ -21,5 +21,3 @@ out_dir = '/var/www/'
 token_out_file=out_dir +'token.txt'
 
 mysecret="mx4JncNOPY0ZwvU1B7re6KGH3GDTULs6"
-
-'
