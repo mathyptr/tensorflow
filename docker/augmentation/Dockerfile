@@ -4,7 +4,7 @@ RUN apt-get update
 RUN DEBIAN_FRONTEND="noninteractive" apt-get -y install tzdata curl git wget vim  unzip python3 python3-pip
 
 RUN mv /usr/lib/python3.12/EXTERNALLY-MANAGED /usr/lib/python3/EXTERNALLY-MANAGED.old
-RUN (pip install pycocotools && pip install albumentations)
+RUN (pip install pycocotools && pip install albumentations && pip install pandas)
 
 RUN (mkdir /content && mkdir /content/image && mkdir /content/dataset && mkdir /content/cmd && mkdir /content/log && chmod g+w /content/cmd  && mkdir /content/cgi-bin) 
 WORKDIR /content
